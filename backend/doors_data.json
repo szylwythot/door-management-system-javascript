@@ -1,0 +1,58 @@
+{
+    "doors": [
+        {
+            "locked": true,
+            "closed": true,
+            "id": 1,
+            "label" : "Entrance door"
+        },
+        {
+            "locked": false,
+            "closed": true,
+            "id": 2,
+            "label" : "IT Office door 1"
+        },
+        {
+            "locked": true,
+            "closed": true,
+            "id": 3,
+            "label" : "IT office door 2"
+        },
+        {
+            "locked": false,
+            "closed": false,
+            "id": 4,
+            "label" : "HR office door"
+        },
+        {
+            "locked": false,
+            "closed": true,
+            "id": 5,
+            "label" : "Kodály scrum team door 1"
+        },
+        {
+            "locked": false,
+            "closed": true,
+            "id": 6,
+            "label" : "Bartók scrum team door 1"
+        },
+        {
+            "locked": false,
+            "closed": true,
+            "id": 7,
+            "label" : "Bartók scrum team door 2"
+        },
+        {
+            "locked": false,
+            "closed": true,
+            "id": 8,
+            "label" : "Men's room door"
+        },
+        {
+            "locked": false,
+            "closed": true,
+            "id": 9,
+            "label" : "Women's room door"
+        }
+    ]
+}
