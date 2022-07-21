@@ -9,11 +9,11 @@ const { resourceLimits } = require("worker_threads");
 
 const app = express();
 const port = `9000`;
-const ipAddress = `http://127.0.0.2:${port}`
+const ipAddress = `http://127.0.0.1:${port}`
 
 const publicAbsolutePath = `${__dirname}/../frontend/public`;
 const indexHtmlAbsolutePath = `${__dirname}/../frontend/index.html`;
-const studentJsonAbsolutePath = `${__dirname}/data/students.json`
+const studentJsonAbsolutePath = `${__dirname}/data/doors.json`
 
 const studentStatuses = [
     {
