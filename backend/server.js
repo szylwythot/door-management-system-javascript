@@ -90,40 +90,76 @@ app.get(`/api/doors/:key`, (request, response, next) => { // TODO: try get statu
 
 });
 
-getstudetsByStatus =  (key) => {
-    let response = {};
-    console.log(response)
-    let status = studentStatuses.filter( status => status.statusName === key);
+app.delete(`/api/doors/:key`, (request, response, next) => {
+    const key = request.params.key;
+    const parsedKey = parseInt(key); 
 
-    if(status.length > 0){
-        if (status !== [] && status !== undefined){
-        console.log("status request recieved");
-        const statusValue = status.statusValue;
+    let isValidId = true;
+    if( !isNaN(parsedKey) ) {
+        console.log("Id request recieved");
 
-        fs.readFile(doorsJsonAbsolutePath, (error, data) =>{
+        fs.readFile(doorsJsonAbsolutePath, (error, data) =>
+        {
             if(error){
-                response = { statusCode : 404, body: "Error just happened during opening the file." };
-                console.log(response)
+                response.send("Error just happened during opening the file.");
             } else {
-                const users = JSON.parse(data);
-                const usersOfStatus = users.filter( user => user.status === statusValue);
-                response = { body: usersOfStatus };
-                console.log(response)
+                const doorsData = JSON.parse(data);
+                const requestedId = parseInt(request.params.key);
+                const complementerDoors = doorsData.doors.filter( door => door.id !== requestedId);
+                console.log(complementerDoors);
+                
+                let complementerDoorsStringified = JSON.stringify({doors: complementerDoors});
+                console.log(complementerDoorsStringified);
+
+                fs.writeFileSync(doorsJsonAbsolutePath, complementerDoorsStringified, err => {
+                    if (err) console.log("Error writing file:", err);
+                });
+                response.send({"deleted": true});
             }
         });
-        } else {
-            response = { statusCode : 404, body: "Please add valid student ID or valid student status in url." };
-            console.log(response)
-        }
-    } else {
-        response = { statusCode : 404, body: "Please add valid student ID or valid student status in url." };
-        console.log(response)
     }
-    
-    console.log(response)
 
-    return response;
-};
+    if (!isValidId){
+        response.statusCode = 404;
+        response.send("Please add valid student ID");
+        //or valid student status in url.");
+    }
+});
+
+// getstudetsByStatus =  (key) => {
+//     let response = {};
+//     console.log(response)
+//     let status = studentStatuses.filter( status => status.statusName === key);
+
+//     if(status.length > 0){
+//         if (status !== [] && status !== undefined){
+//         console.log("status request recieved");
+//         const statusValue = status.statusValue;
+
+//         fs.readFile(doorsJsonAbsolutePath, (error, data) =>{
+//             if(error){
+//                 response = { statusCode : 404, body: "Error just happened during opening the file." };
+//                 console.log(response)
+//             } else {
+//                 const users = JSON.parse(data);
+//                 const usersOfStatus = users.filter( user => user.status === statusValue);
+//                 response = { body: usersOfStatus };
+//                 console.log(response)
+//             }
+//         });
+//         } else {
+//             response = { statusCode : 404, body: "Please add valid student ID or valid student status in url." };
+//             console.log(response)
+//         }
+//     } else {
+//         response = { statusCode : 404, body: "Please add valid student ID or valid student status in url." };
+//         console.log(response)
+//     }
+    
+//     console.log(response)
+
+//     return response;
+// };
 
 
 app.listen(port, () => {
