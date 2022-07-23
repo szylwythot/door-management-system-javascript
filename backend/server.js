@@ -32,8 +32,9 @@ app.get(`/api/doors/:key`, (request, response, next) => { // TODO: try get statu
     const key = request.params.key;
     const parsedKey = parseInt(key); 
 
-    let isValidId = true;
-    if( !isNaN(parsedKey) ) {
+    if(isNaN(parsedKey)){
+        response.send("Please add valid student ID"); // If I work with isValid variable, sometimes fs readfile does not stop
+    } else {
         console.log("Id request recieved");
 
         fs.readFile(doorsJsonAbsolutePath, (error, data) =>
@@ -42,52 +43,16 @@ app.get(`/api/doors/:key`, (request, response, next) => { // TODO: try get statu
                 response.send("Error just happened during opening the file.");
             } else {
                 const doorsData = JSON.parse(data);
-                const requestedId = parseInt(request.params.key);
+                const requestedId = parsedKey;
                 const door = doorsData.doors.filter( door => door.id === requestedId)[0];
                 if(door != undefined){
                     response.send(door);
                 } else{
-                    isValidId = false;
+                    response.send("Please add valid student ID");
                 }
             }
         });
     }
-
-    // else {
-    //     let status = studentStatuses.filter( status => status.statusName === key);
-
-    //     if(status.length > 0){
-    //         console.log("status request recieved");
-
-    //         const statusValue =  status[0].statusValue;
-    //         // console.log(statusValue);
-    
-    //         fs.readFile(doorsJsonAbsolutePath, (error, data) =>{
-    //             if(error){
-    //                 response.statusCode = 404;
-    //                 response.send("Error just happened during opening the file.");
-    //             } else {
-    //                 const users = JSON.parse(data);
-    //                 // console.log(users)
-                    
-    //                 const usersOfStatus = users.filter( user => {
-    //                     return user.status === statusValue
-    //                 });
-    //                 console.log(usersOfStatus)
-    //                 response.send(usersOfStatus);
-    //             }
-    //         });
-    //     } else{
-    //         isValidId = false;
-    //     }
-    // }
-
-    if (!isValidId){
-        response.statusCode = 404;
-        response.send("Please add valid student ID");
-        //or valid student status in url.");
-    }
-
 });
 
 app.delete(`/api/doors/:key`, (request, response, next) => {
