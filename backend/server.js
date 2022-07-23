@@ -91,6 +91,10 @@ app.delete(`/api/doors/:key`, (request, response, next) => {
     }
 });
 
+app.listen(port, () => {
+    console.log(ipAddress);
+});
+
 // getstudetsByStatus =  (key) => {
 //     let response = {};
 //     console.log(response)
@@ -125,8 +129,3 @@ app.delete(`/api/doors/:key`, (request, response, next) => {
 
 //     return response;
 // };
-
-
-app.listen(port, () => {
-    console.log(ipAddress);
-});
